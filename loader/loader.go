@@ -2,6 +2,9 @@
 package loader
 
 import (
+	"errors"
+
+	"github.com/golang/freetype/truetype"
 	"github.com/theTardigrade/goFonts/data/opensansbold"
 	"github.com/theTardigrade/goFonts/data/opensansbolditalic"
 	"github.com/theTardigrade/goFonts/data/opensansextrabold"
@@ -56,12 +59,53 @@ import (
 	"github.com/theTardigrade/goFonts/data/robotothinitalic"
 )
 
+var (
+	ErrFontNotFound = errors.New("font not found")
+)
+
+// Font retrieves a parsed font by name at runtime.
+func Font(pkgName string) (font *truetype.Font, err error) {
+	data, found := TTF(pkgName)
+	if found {
+		font, err = truetype.Parse(data)
+	} else {
+		err = ErrFontNotFound
+	}
+
+	return
+}
+
 // TTF retrieves the data for a given font by name at runtime.
 func TTF(pkgName string) (data []byte, found bool) {
 	found = true
 
 	if len(pkgName) >= 2 {
 		switch pkgName[0] {
+		case 'o':
+			switch pkgName[1:] {
+			case "pensansbold":
+				data = opensansbold.TTF
+			case "pensansbolditalic":
+				data = opensansbolditalic.TTF
+			case "pensansextrabold":
+				data = opensansextrabold.TTF
+			case "pensansextrabolditalic":
+				data = opensansextrabolditalic.TTF
+			case "pensansitalic":
+				data = opensansitalic.TTF
+			case "pensanslight":
+				data = opensanslight.TTF
+			case "pensanslightitalic":
+				data = opensanslightitalic.TTF
+			case "pensansregular":
+				data = opensansregular.TTF
+			case "pensanssemibold":
+				data = opensanssemibold.TTF
+			case "pensanssemibolditalic":
+				data = opensanssemibolditalic.TTF
+			default:
+				found = false
+			}
 		case 'p':
 			switch pkgName[1:] {
 			case "layfairdisplayblack":
@@ -153,31 +197,6 @@ func TTF(pkgName string) (data []byte, found bool) {
 				data = robotothin.TTF
 			case "obotothinitalic":
 				data = robotothinitalic.TTF
-			default:
-				found = false
-			}
-		case 'o':
-			switch pkgName[1:] {
-			case "pensansbold":
-				data = opensansbold.TTF
-			case "pensansbolditalic":
-				data = opensansbolditalic.TTF
-			case "pensansextrabold":
-				data = opensansextrabold.TTF
-			case "pensansextrabolditalic":
-				data = opensansextrabolditalic.TTF
-			case "pensansitalic":
-				data = opensansitalic.TTF
-			case "pensanslight":
-				data = opensanslight.TTF
-			case "pensanslightitalic":
-				data = opensanslightitalic.TTF
-			case "pensansregular":
-				data = opensansregular.TTF
-			case "pensanssemibold":
-				data = opensanssemibold.TTF
-			case "pensanssemibolditalic":
-				data = opensanssemibolditalic.TTF
 			default:
 				found = false
 			}
