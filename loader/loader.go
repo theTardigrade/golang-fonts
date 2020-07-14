@@ -56,12 +56,29 @@ import (
 	"github.com/theTardigrade/goFonts/data/robotothinitalic"
 )
 
-// Load retrieves the data for a given font by name at runtime.
-func Load(pkgName string) (data []byte, found bool) {
+// TTF retrieves the data for a given font by name at runtime.
+func TTF(pkgName string) (data []byte, found bool) {
 	found = true
 
 	if len(pkgName) >= 2 {
 		switch pkgName[0] {
+		case 'p':
+			switch pkgName[1:] {
+			case "layfairdisplayblack":
+				data = playfairdisplayblack.TTF
+			case "layfairdisplayblackitalic":
+				data = playfairdisplayblackitalic.TTF
+			case "layfairdisplaybold":
+				data = playfairdisplaybold.TTF
+			case "layfairdisplaybolditalic":
+				data = playfairdisplaybolditalic.TTF
+			case "layfairdisplayitalic":
+				data = playfairdisplayitalic.TTF
+			case "layfairdisplayregular":
+				data = playfairdisplayregular.TTF
+			default:
+				found = false
+			}
 		case 'r':
 			switch pkgName[1:] {
 			case "alewayblack":
@@ -161,23 +178,6 @@ func Load(pkgName string) (data []byte, found bool) {
 				data = opensanssemibold.TTF
 			case "pensanssemibolditalic":
 				data = opensanssemibolditalic.TTF
-			default:
-				found = false
-			}
-		case 'p':
-			switch pkgName[1:] {
-			case "layfairdisplayblack":
-				data = playfairdisplayblack.TTF
-			case "layfairdisplayblackitalic":
-				data = playfairdisplayblackitalic.TTF
-			case "layfairdisplaybold":
-				data = playfairdisplaybold.TTF
-			case "layfairdisplaybolditalic":
-				data = playfairdisplaybolditalic.TTF
-			case "layfairdisplayitalic":
-				data = playfairdisplayitalic.TTF
-			case "layfairdisplayregular":
-				data = playfairdisplayregular.TTF
 			default:
 				found = false
 			}
